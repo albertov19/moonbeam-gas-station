@@ -43,7 +43,7 @@ class GasInfo extends Component {
           }
         );
       } else {
-        console.error("Network not supported");
+        console.log("Network not supported");
       }
 
       // Fetch Latest Block
@@ -69,11 +69,10 @@ class GasInfo extends Component {
         minGasPrice: minGasPrice.toFixed(1),
         maxGasPrice: maxGasPrice.toFixed(1),
       });
-
-      this.intervalID = setTimeout(this.onUpdate.bind(this), 5000);
     } catch (error) {
       console.log(error);
     }
+    this.intervalID = setTimeout(this.onUpdate.bind(this), 5000);
   };
 
   render() {
