@@ -73,7 +73,7 @@ class GasInfo extends Component {
         maxGasPrice = Math.max.apply(Math, gasPrices);
       } else {
         // If there were no txs, the min gas Price is still valid
-        let gasPrice = (await provider.getGasPrice()) / ethers.BigNumber.from("1000000000");
+        let gasPrice = (await web3.getGasPrice()) / ethers.BigNumber.from("1000000000");
         avgGasPrice = gasPrice;
         minGasPrice = gasPrice;
         maxGasPrice = gasPrice;
