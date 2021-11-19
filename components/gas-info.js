@@ -58,17 +58,26 @@ class GasInfo extends Component {
         gasPrices[i] = blockTxInfo[i].gasPrice / ethers.BigNumber.from("1000000000");
       }
       // Get Avg Gas Price, Min Gas Price and Max Gas Price
-      let avgGasPrice = gasPrices.reduce((a, b) => a + b) / gasPrices.length;
-      let minGasPrice = Math.min.apply(Math, gasPrices);
-      let maxGasPrice = Math.max.apply(Math, gasPrices);
+      if (gasPrices.length) {
+        let avgGasPrice;
+        let minGasPrice;
+        let maxGasPrice;
+        if (gasPrices.length === 0) {
+          avgGasPrice = gasPrices[0];
+        } else {
+          avgGasPrice = gasPrices.reduce((a, b) => a + b) / gasPrices.length;
+        }
+        minGasPrice = Math.min.apply(Math, gasPrices);
+        maxGasPrice = Math.max.apply(Math, gasPrices);
 
-      // Save variables
-      this.setState({
-        currentBlock: latestBlock,
-        avgGasPrice: avgGasPrice.toFixed(1),
-        minGasPrice: minGasPrice.toFixed(1),
-        maxGasPrice: maxGasPrice.toFixed(1),
-      });
+        // Save variables
+        this.setState({
+          currentBlock: latestBlock,
+          avgGasPrice: avgGasPrice.toFixed(1),
+          minGasPrice: minGasPrice.toFixed(1),
+          maxGasPrice: maxGasPrice.toFixed(1),
+        });
+      }
     } catch (error) {
       console.log(error);
     }
