@@ -24,9 +24,16 @@ class MoonbeamGasStation extends Component {
             <Image src={require("/public/moongas.gif")} width={8} height={1} layout="responsive" />
           </Grid.Column>
         </Grid>
+        <h1>Moonbeam Network Basic Gas Station</h1>
         <Grid>
           <Grid.Column width={8} stretched verticalAlign="top">
-            <h2>Moonriver Basic Gas Station</h2>
+            <h2>Moonbeam</h2>
+            <GasInfo network={"moonbeam"} />
+          </Grid.Column>
+        </Grid>
+        <Grid>
+          <Grid.Column width={8} stretched verticalAlign="top">
+            <h2>Moonriver</h2>
             <GasInfo network={"moonriver"} />
           </Grid.Column>
         </Grid>
@@ -34,7 +41,7 @@ class MoonbeamGasStation extends Component {
         <br />
         <Grid>
           <Grid.Column width={8} stretched verticalAlign="top">
-            <h2>Moonbase Alpha Basic Gas Station</h2>
+            <h2>Moonbase</h2>
             <GasInfo network={"moonbase"} />
           </Grid.Column>
         </Grid>

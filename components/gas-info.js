@@ -26,7 +26,12 @@ class GasInfo extends Component {
     try {
       // Get Web3 Provider
       let web3;
-      if (this.props.network === "moonriver") {
+      if (this.props.network === "moonbeam") {
+        web3 = new ethers.providers.StaticJsonRpcProvider("https://rpc.api.moonbeam.network", {
+          chainId: 1284,
+          name: "moonbeam",
+        });
+      } else if (this.props.network === "moonriver") {
         web3 = new ethers.providers.StaticJsonRpcProvider(
           "https://rpc.moonriver.moonbeam.network",
           {
@@ -36,7 +41,7 @@ class GasInfo extends Component {
         );
       } else if (this.props.network === "moonbase") {
         web3 = new ethers.providers.StaticJsonRpcProvider(
-          "https://moonbeam-alpha.api.onfinality.io/public",
+          "https://rpc.api.moonbase.moonbeam.network",
           {
             chainId: 1287,
             name: "moonbase-alpha",
