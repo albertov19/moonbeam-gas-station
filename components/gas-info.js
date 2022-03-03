@@ -33,7 +33,7 @@ class GasInfo extends Component {
         });
       } else if (this.props.network === "moonriver") {
         web3 = new ethers.providers.StaticJsonRpcProvider(
-          "https://rpc.moonriver.moonbeam.network",
+          "https://rpc.api.moonriver.moonbeam.network",
           {
             chainId: 1285,
             name: "moonriver",
