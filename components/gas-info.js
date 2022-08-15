@@ -6,15 +6,25 @@ import * as ethers from "ethers";
 const GasInfo = ({ network }) => {
   // Initial State
   const [connected, setConnected] = useState(false);
-  const [currentBlock, setCurrentBlock] = useState("0");
-  const [nTxs, setNTxs] = useState("0");
-  const [avgGasPrice, setAvgGasPrice] = useState("0");
-  const [minGasPrice, setMinGasPrice] = useState("0");
-  const [maxGasPrice, setMaxGasPrice] = useState("0");
+  const [currentBlock, setCurrentBlock] = useState(0);
+  const [nTxs, setNTxs] = useState(0);
+  const [avgGasPrice, setAvgGasPrice] = useState(0);
+  const [minGasPrice, setMinGasPrice] = useState(0);
+  const [maxGasPrice, setMaxGasPrice] = useState(0);
+  const [chainMinGasPrice, setChainMinGasPrice] = useState(0);
+  const [feeHistory, setFeeHistory] = useState(new Array());
 
   useEffect(async () => {
     setInterval(async () => await onUpdate(), 5000);
   }, []);
+
+  const customWeb3Request = async (web3Provider, method, params) => {
+    try {
+      return await web3Provider.send(method, params);
+    } catch (error) {
+      throw new Error(error.body);
+    }
+  };
 
   const onUpdate = async () => {
     // Get Web3 Provider
@@ -95,11 +105,15 @@ const GasInfo = ({ network }) => {
       }
 
       // Save variables
-      setCurrentBlock(latestBlock.toString());
-      setNTxs(nTxs.toString());
+      setCurrentBlock(latestBlock);
+      setNTxs(nTxs);
       setAvgGasPrice(avgGasPrice.toFixed(1));
       setMinGasPrice(minGasPrice.toFixed(1));
       setMaxGasPrice(maxGasPrice.toFixed(1));
+      setChainMinGasPrice((await web3.getGasPrice()) / ethers.BigNumber.from("1000000000"));
+      setFeeHistory(
+        (await customWeb3Request(web3, "eth_feeHistory", ["0x5", "latest"])).baseFeePerGas
+      );
     } catch (error) {
       setConnected(false);
     }
@@ -135,6 +149,18 @@ const GasInfo = ({ network }) => {
                   <b>Avg. Gas Price of Block</b>
                 </td>
                 <td style={{ textAlign: "right" }}>{avgGasPrice} GWei</td>
+              </tr>
+              <tr>
+                <td style={{ width: "60%" }}>
+                  <b>Network Min Gas Price</b>
+                </td>
+                <td style={{ textAlign: "right" }}>{chainMinGasPrice} GWei</td>
+              </tr>
+              <tr>
+                <td style={{ width: "60%" }}>
+                  <b>Fee History Base Fee Per Gas (5 Blocks)</b>
+                </td>
+                <td style={{ textAlign: "right" }}>{JSON.stringify(feeHistory, null, "\n")}</td>
               </tr>
             </tbody>
           </table>
