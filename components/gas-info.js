@@ -15,7 +15,7 @@ const GasInfo = ({ network }) => {
   const [feeHistory, setFeeHistory] = useState(new Array());
 
   useEffect(async () => {
-    setInterval(async () => await onUpdate(), 5000);
+    setInterval(async () => await onUpdate(), 10000);
   }, []);
 
   const customWeb3Request = async (web3Provider, method, params) => {
