@@ -1,11 +1,16 @@
-import React from "react";
-import { Container, Grid } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Container, Grid, Checkbox } from "semantic-ui-react";
 import Head from "next/head";
 import Image from "next/image";
 
 import GasInfo from "../components/gas-info";
 
 const MoonbeamGasStation = () => {
+  const [devNode, setDevNode] = useState(false);
+
+  const onChangeCheckbox = (_, data) => {
+    setDevNode(data.checked);
+  };
   return (
     <Container>
       <br />
@@ -24,28 +29,44 @@ const MoonbeamGasStation = () => {
       </Grid>
       <h1>Moonbeam Network Basic Gas Station</h1>
       <Grid>
-        <Grid.Column width={8} stretched verticalAlign="top">
-          <h2>Moonbeam</h2>
-          <GasInfo network={"moonbeam"} />
-        </Grid.Column>
-      </Grid>
-      <Grid>
-        <Grid.Column width={8} stretched verticalAlign="top">
-          <h2>Moonriver</h2>
-          <GasInfo network={"moonriver"} />
-        </Grid.Column>
-      </Grid>
-      <Grid>
-        <Grid.Column width={8} stretched verticalAlign="top">
-          <h2>Moonbase</h2>
-          <GasInfo network={"moonbase"} />
-        </Grid.Column>
-      </Grid>
-      <Grid>
-        <Grid.Column width={8} stretched verticalAlign="top">
-          <h2>Moonbeam Dev Node</h2>
-          <GasInfo network={"moonbeam-dev"} />
-        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={8} stretched verticalAlign="top">
+            <h2>Moonbeam</h2>
+            <GasInfo network={"moonbeam"} />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column width={8} stretched verticalAlign="top">
+            <h2>Moonriver</h2>
+            <GasInfo network={"moonriver"} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={8} stretched verticalAlign="top">
+            <h2>Moonbase</h2>
+            <GasInfo network={"moonbase"} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={8} stretched verticalAlign="top">
+            <h2>
+              Moonbeam Dev Node{" "}
+              <Checkbox
+                toggle
+                default={false}
+                onClick={(evt, data) => onChangeCheckbox(evt, data)}
+              />
+            </h2>
+            {devNode ? (
+              <GasInfo network={"moonbeam-dev"} />
+            ) : (
+              <Container>
+                <h4>Network not Available</h4>
+              </Container>
+            )}
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Container>
   );

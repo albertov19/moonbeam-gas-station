@@ -14,8 +14,12 @@ const GasInfo = ({ network }) => {
   const [chainMinGasPrice, setChainMinGasPrice] = useState(0);
   const [feeHistory, setFeeHistory] = useState(new Array());
 
-  useEffect(async () => {
-    setInterval(async () => await onUpdate(), 10000);
+  useEffect(() => {
+    onUpdate();
+    const intervalID = setInterval(() => onUpdate(), 3000);
+    return () => {
+      clearInterval(intervalID);
+    };
   }, []);
 
   const customWeb3Request = async (web3Provider, method, params) => {
