@@ -11,7 +11,6 @@ const GasInfo = ({ network }) => {
   const [avgGasPrice, setAvgGasPrice] = useState(0);
   const [baseFee, setBaseFee] = useState(0);
   const [maxGasPrice, setMaxGasPrice] = useState(0);
-  const [chainMinGasPrice, setChainMinGasPrice] = useState(0);
   const [feeHistory, setFeeHistory] = useState(new Array());
   const [blockUsed, setBlockUsed] = useState(0);
 
@@ -83,6 +82,8 @@ const GasInfo = ({ network }) => {
 
       // Base Fee
       let baseFee = blockInfo.baseFeePerGas / ethers.BigNumber.from("1000000000");
+      // Decimal Magic
+      console.log(baseFee.toPrecision(4));
 
       // Loop through tx to get the gas price of each
       let gasPrices = Array();
@@ -113,12 +114,11 @@ const GasInfo = ({ network }) => {
 
       // Save variables
       setCurrentBlock(latestBlock);
-      setBlockUsed(blockUsed.toFixed(0));
-      setBaseFee(baseFee.toFixed(4));
+      setBlockUsed(blockUsed.toFixed());
+      setBaseFee(baseFee.toPrecision(4));
       setNTxs(nTxs);
-      setAvgGasPrice(avgGasPrice.toFixed(1));
-      setMaxGasPrice(maxGasPrice.toFixed(1));
-      setChainMinGasPrice((await web3.getGasPrice()) / ethers.BigNumber.from("1000000000"));
+      setAvgGasPrice(avgGasPrice.toPrecision(4));
+      setMaxGasPrice(maxGasPrice.toPrecision(4));
       setFeeHistory(
         (await customWeb3Request(web3, "eth_feeHistory", ["0x5", "latest"])).baseFeePerGas
       );
@@ -164,12 +164,6 @@ const GasInfo = ({ network }) => {
                   <b>Avg. Gas Price of Block</b>
                 </td>
                 <td style={{ textAlign: "right" }}>{avgGasPrice} GWei</td>
-              </tr>
-              <tr>
-                <td style={{ width: "60%" }}>
-                  <b>Network Min Gas Price</b>
-                </td>
-                <td style={{ textAlign: "right" }}>{chainMinGasPrice} GWei</td>
               </tr>
               <tr>
                 <td style={{ width: "60%" }}>
