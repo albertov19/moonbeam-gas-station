@@ -9,10 +9,11 @@ const GasInfo = ({ network }) => {
   const [currentBlock, setCurrentBlock] = useState(0);
   const [nTxs, setNTxs] = useState(0);
   const [avgGasPrice, setAvgGasPrice] = useState(0);
-  const [minGasPrice, setMinGasPrice] = useState(0);
+  const [baseFee, setBaseFee] = useState(0);
   const [maxGasPrice, setMaxGasPrice] = useState(0);
   const [chainMinGasPrice, setChainMinGasPrice] = useState(0);
   const [feeHistory, setFeeHistory] = useState(new Array());
+  const [blockUsed, setBlockUsed] = useState(0);
 
   useEffect(() => {
     onUpdate();
@@ -76,7 +77,12 @@ const GasInfo = ({ network }) => {
       setConnected(true);
 
       // Fetch Latest Block Information
-      const blockTxInfo = (await web3.getBlockWithTransactions(latestBlock)).transactions;
+      const blockInfo = await web3.getBlockWithTransactions(latestBlock);
+      const blockUsed = (ethers.BigNumber.from("100") * blockInfo.gasUsed) / blockInfo.gasLimit;
+      const blockTxInfo = blockInfo.transactions;
+
+      // Base Fee
+      let baseFee = blockInfo.baseFeePerGas / ethers.BigNumber.from("1000000000");
 
       // Loop through tx to get the gas price of each
       let gasPrices = Array();
@@ -86,7 +92,6 @@ const GasInfo = ({ network }) => {
       // Get Avg Gas Price, Min Gas Price and Max Gas Price
       let nTxs;
       let avgGasPrice;
-      let minGasPrice;
       let maxGasPrice;
       // Check if there are txs in the block
       if (gasPrices.length) {
@@ -97,28 +102,28 @@ const GasInfo = ({ network }) => {
         } else {
           avgGasPrice = gasPrices.reduce((a, b) => a + b) / gasPrices.length;
         }
-        minGasPrice = Math.min.apply(Math, gasPrices);
         maxGasPrice = Math.max.apply(Math, gasPrices);
       } else {
         // If there were no txs, the min gas Price is still valid
         let gasPrice = (await web3.getGasPrice()) / ethers.BigNumber.from("1000000000");
         nTxs = 0;
         avgGasPrice = gasPrice;
-        minGasPrice = gasPrice;
         maxGasPrice = gasPrice;
       }
 
       // Save variables
       setCurrentBlock(latestBlock);
+      setBlockUsed(blockUsed.toFixed(0));
+      setBaseFee(baseFee.toFixed(4));
       setNTxs(nTxs);
       setAvgGasPrice(avgGasPrice.toFixed(1));
-      setMinGasPrice(minGasPrice.toFixed(1));
       setMaxGasPrice(maxGasPrice.toFixed(1));
       setChainMinGasPrice((await web3.getGasPrice()) / ethers.BigNumber.from("1000000000"));
       setFeeHistory(
         (await customWeb3Request(web3, "eth_feeHistory", ["0x5", "latest"])).baseFeePerGas
       );
     } catch (error) {
+      console.error(error);
       setConnected(false);
     }
   };
@@ -138,9 +143,15 @@ const GasInfo = ({ network }) => {
               </tr>
               <tr>
                 <td style={{ width: "60%" }}>
-                  <b>Min. Gas Price of Block</b>
+                  <b>% of Block Used</b>
                 </td>
-                <td style={{ textAlign: "right" }}>{minGasPrice} GWei</td>
+                <td style={{ textAlign: "right" }}>{blockUsed} %</td>
+              </tr>
+              <tr>
+                <td style={{ width: "60%" }}>
+                  <b>Base Fee</b>
+                </td>
+                <td style={{ textAlign: "right" }}>{baseFee} GWei</td>
               </tr>
               <tr>
                 <td style={{ width: "60%" }}>
