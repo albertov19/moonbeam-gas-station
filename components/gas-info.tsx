@@ -103,8 +103,8 @@ const GasInfo = ({ network }) => {
       }
       // Get Avg Gas Price, Min Gas Price and Max Gas Price
       let nTxs;
-      let avgGasPrice: BigInt;
-      let maxGasPrice: BigInt;
+      let avgGasPrice;
+      let maxGasPrice;
       // Check if there are txs in the block
       if (gasPrices.length) {
         nTxs = gasPrices.length;
@@ -135,10 +135,7 @@ const GasInfo = ({ network }) => {
       setBlockUsed(blockUsed);
       setBaseFee(baseFee);
       setNTxs(nTxs);
-      setAvgGasPrice(
-        (BigInt(1000) * BigInt(gasPrices.reduce((a, b) => a + b))) /
-          BigInt(gasPrices.length)
-      );
+      setAvgGasPrice(avgGasPrice);
       setMaxGasPrice(maxGasPrice);
       setTxPoolPending(BigInt(txPoolStatus.pending));
       setTxPoolPending(BigInt(txPoolStatus.queued));
