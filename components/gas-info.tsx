@@ -135,7 +135,10 @@ const GasInfo = ({ network }) => {
       setBlockUsed(blockUsed);
       setBaseFee(baseFee);
       setNTxs(nTxs);
-      setAvgGasPrice(avgGasPrice);
+      setAvgGasPrice(
+        (BigInt(1000) * BigInt(gasPrices.reduce((a, b) => a + b))) /
+          BigInt(gasPrices.length)
+      );
       setMaxGasPrice(maxGasPrice);
       setTxPoolPending(BigInt(txPoolStatus.pending));
       setTxPoolPending(BigInt(txPoolStatus.queued));
