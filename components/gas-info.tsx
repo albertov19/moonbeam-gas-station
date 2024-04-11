@@ -137,8 +137,8 @@ const GasInfo = ({ network }) => {
       setNTxs(nTxs);
       setAvgGasPrice(avgGasPrice);
       setMaxGasPrice(maxGasPrice);
-      setTxPoolPending(BigInt(txPoolStatus.pending));
-      setTxPoolPending(BigInt(txPoolStatus.queued));
+      setTxPoolPending(BigInt(parseInt(txPoolStatus.pending, 16)));
+      setTxPoolQueued(BigInt(parseInt(txPoolStatus.queued, 16)));
 
       setFeeHistory(
         (await customWeb3Request(web3, 'eth_feeHistory', ['0x5', 'latest']))
