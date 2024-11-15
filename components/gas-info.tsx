@@ -66,7 +66,7 @@ const GasInfo = ({ network }) => {
           break;
         case 'moonbeam-dev':
           web3 = new ethers.providers.StaticJsonRpcProvider(
-            'http://127.0.0.1:9933',
+            'http://127.0.0.1:9944',
             {
               chainId: 1281,
               name: 'moonbeam-dev',
