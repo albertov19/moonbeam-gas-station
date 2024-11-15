@@ -56,12 +56,20 @@ const MoonbeamGasStation = () => {
         <Grid.Row>
           <Grid.Column width={8} stretched verticalAlign='top'>
             <h2>
-              Moonbeam Dev Node{' '}
+              Moonbeam Dev Node (With{' '}
+              <a
+                href='https://docs.moonbeam.network/node-operators/networks/tracing-node/#tracing-node-flags'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Tx Pool API
+              </a>{' '}
               <Checkbox
                 toggle
                 default={false}
                 onClick={(evt, data) => onChangeCheckbox(evt, data)}
               />
+              )
             </h2>
             {devNode ? (
               <GasInfo network={'moonbeam-dev'} />
