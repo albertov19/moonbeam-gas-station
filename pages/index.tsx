@@ -63,13 +63,12 @@ const MoonbeamGasStation = () => {
                 rel='noopener noreferrer'
               >
                 Tx Pool API
-              </a>{' '}
+              </a>){' '}
               <Checkbox
                 toggle
                 default={false}
                 onClick={(evt, data) => onChangeCheckbox(evt, data)}
               />
-              )
             </h2>
             {devNode ? (
               <GasInfo network={'moonbeam-dev'} />
